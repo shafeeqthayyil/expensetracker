@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database');
+const db = require('../databaseUnified');
 
 // GET all expense types
 router.get('/', async (req, res) => {

@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const db = require('./database');
+const config = require('./config');
+const db = require('./databaseUnified');
 
 // Import routes
 const clientsRouter = require('./routes/clients');
@@ -11,7 +12,6 @@ const incomeRouter = require('./routes/income');
 const dashboardRouter = require('./routes/dashboard');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -71,16 +71,17 @@ app.use((req, res) => {
 // Initialize database and start server
 db.connect()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`\n${'='.repeat(50)}`);
-      console.log(`🚀 Server is running on http://localhost:${PORT}`);
-      console.log(`📊 API Documentation: http://localhost:${PORT}/`);
-      console.log(`💚 Health Check: http://localhost:${PORT}/health`);
-      console.log(`${'='.repeat(50)}\n`);
+    app.listen(config.PORT, () => {
+      console.log(`\n${'='.repeat(60)}`);
+      console.log(`🚀 Server running on http://localhost:${config.PORT}`);
+      console.log(`📊 API Documentation: http://localhost:${config.PORT}/`);
+      console.log(`💚 Health Check: http://localhost:${config.PORT}/health`);
+      console.log(`💾 Database: ${config.DB_TYPE.toUpperCase()}`);
+      console.log(`${'='.repeat(60)}\n`);
     });
   })
   .catch((error) => {
-    console.error('Failed to initialize database:', error);
+    console.error('❌ Failed to initialize database:', error);
     process.exit(1);
   });
 
